@@ -33,6 +33,22 @@ public class ChessPosition {
         return Objects.hash(getRow(), col);
     }
 
+    private final int row;
+    private final int col;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ChessPosition that)) {
+            return false;
+        }
+        return getRow() == that.getRow() && col == that.col;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRow(), col);
+    }
+
     public ChessPosition(int row, int col) {
         this.row = row;
         this.col = col;
