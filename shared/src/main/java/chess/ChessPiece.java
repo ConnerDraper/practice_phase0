@@ -249,6 +249,7 @@ public class ChessPiece {
                     if (currTeam == otherTeam) {
                         moves.add(proposedMove);
                     }
+                    break;
                 }
                 if (!repeat) {break;}
             }
