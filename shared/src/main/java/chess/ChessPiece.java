@@ -230,7 +230,8 @@ public class ChessPiece {
 
                 // validate not out of bounds
                 if ((currRow < 1) || (currRow > 8) || (currColumn < 1) || (currColumn > 8)) {break;}
-                currPiece = board.getPiece(currPosition);
+                currPosition = new ChessPosition(currRow, currColumn);
+                currPiece = board.getPiece(currRow, currColumn);
                 proposedMove = new ChessMove(myPosition, currPosition, null);
 
                 // validate if empty or capturable
