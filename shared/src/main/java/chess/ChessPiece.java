@@ -86,7 +86,6 @@ public class ChessPiece {
         if (type == PieceType.PAWN) {
             int startingRow;
             int forwardDirection;
-            ChessPosition currPosition;
             ChessGame.TeamColor otherColor;
             int promotionRow;
 
@@ -106,15 +105,22 @@ public class ChessPiece {
 
             // single forward and two forward
             if (board.getPiece(row + forwardDirection, column) == null) {
-                ChessPosition frontSpace = new ChessPosition(row + 1, column);
-                ChessMove frontMove = new ChessMove(myPosition, frontSpace, null);
-                moves.add(frontMove);
+                ChessPosition frontSpace = new ChessPosition(row + forwardDirection, column);
                 if (row == startingRow) {
                     if (board.getPiece(row + (2 * forwardDirection), column) == null) {
-                        ChessPosition twoFrontSpace = new ChessPosition(row + 2, column);
+                        ChessPosition twoFrontSpace = new ChessPosition(row + (2*forwardDirection), column);
                         ChessMove twoFrontMove = new ChessMove(myPosition, twoFrontSpace, null);
                         moves.add(twoFrontMove);
                     }
+                }
+                if (row == promotionRow - forwardDirection) {
+                    moves.add(new ChessMove(myPosition, frontSpace, PieceType.ROOK));
+                    moves.add(new ChessMove(myPosition, frontSpace, PieceType.KNIGHT));
+                    moves.add(new ChessMove(myPosition, frontSpace, PieceType.BISHOP));
+                    moves.add(new ChessMove(myPosition, frontSpace, PieceType.QUEEN));
+                }
+                else {
+                    moves.add(new ChessMove(myPosition, frontSpace, null));
                 }
             }
 
@@ -139,7 +145,7 @@ public class ChessPiece {
 
             // diagonal capture RIGHT
             if (column < 8) {
-                ChessPiece rightPiece = board.getPiece(row + forwardDirection, column - 1);
+                ChessPiece rightPiece = board.getPiece(row + forwardDirection, column+1);
                 if (rightPiece != null) {
                     if (rightPiece.getTeamColor() == otherColor) {
                         if (row == (promotionRow - forwardDirection)) {
@@ -170,14 +176,14 @@ public class ChessPiece {
             moves = getMovesFromDirections(board, myPosition, directions, repeat);
         }
         else if (type == PieceType.BISHOP) {
-            int[][] directions = {{1, 1}, {-1, 1}, {1, -1}, {-1, 1}};
+            int[][] directions = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
             repeat = true;
             moves = getMovesFromDirections(board, myPosition, directions, repeat);
         }
         else if (type == PieceType.QUEEN) {
             int[][] directions = {
                     {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-                    {1, 1}, {-1, 1}, {1, -1}, {-1, 1}
+                    {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
             };
             repeat = true;
             moves = getMovesFromDirections(board, myPosition, directions, repeat);
